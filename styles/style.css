@@ -2,11 +2,11 @@
 
 :root {
     --c1: #acadff;
-    --c2: #B8D1FF;
+    --c2: #aa7efc;
     --c3: #340442;
-    --c4: #8e28ee;
+    --c4: #12381b;
     --c5: #FFB323;
-    --c6: #71a0f7;
+    --c6: #7f5ac5;
     
     --fonte-padrao: 'Roboto', sans-serif;
     --fonte-destaque: 'Varela Round', sans-serif;
@@ -18,6 +18,7 @@
     padding: 0;
     text-decoration: none;
     box-sizing: border-box;
+    user-select: none;
 }
 
 html {
@@ -35,14 +36,13 @@ html, body {
 #container {
     width: 90vw;
 }
-            /*GAMEOVER*/
-           
-#gameOver{
-    top: 40%;
+            /*CONFIGURAÇÃO*/
+#formConfig{
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90vw;
-    height: 60vh;
+    width: 85vw;
+    height: 50vh;
     position: absolute;
     z-index: 1;
     background-color: var(--c2);
@@ -53,12 +53,102 @@ html, body {
     justify-content: center;
 }
 
+#formConfig span {
+    margin-top: 3rem;
+    cursor: pointer;
+    width: 100%;
+    height: 2rem;
+    text-align: center;
+    color: var(--c3);
+}
+
+form {
+    width: 60%;
+    height: 20vh;
+}
+
+.formLabel {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1.2rem;
+    color: var(--c3);
+}
+
+.blocoInput {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#divRange {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.2rem;
+}
+
+.inputRange {
+    appearance: none;
+    background: transparent;
+    outline: none;
+    border: 2px solid var(--c3);
+    border-radius: 25px;
+    width: 90%;
+    height: 1rem;
+    padding: 7px 0;
+}
+
+.inputRange::-webkit-slider-thumb {
+    appearance: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: var(--c3);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+output{
+    color: var(--c3);
+    font-size: 1.3rem;
+    margin-left: 1rem;
+}
+
+.botao {
+    width: 100%;
+    border: none;
+    text-align: center;
+    background-color: var(--c3);
+    color: var(--c2);
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 1rem 0 1rem 1rem;
+}
+
+            /*GAMEOVER*/
+           
+#gameOver{
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85vw;
+    height: 50vh;
+    position: absolute;
+    z-index: 1;
+    background-color: var(--c2);
+    border: 3px solid var(--c3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #itensGameOver {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
-
 
 #itensGameOver > p {
     margin-bottom: 1.5rem;
@@ -113,12 +203,15 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    position: relative;
+    /* position: relative; */
 }
 
 table {
+    /* top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
     margin-top: 5rem;
-    position: relative;
+    position: absolute;
     border: 2px solid var(--c3);
     border-collapse: collapse;
 }
@@ -127,18 +220,6 @@ table td {
     width: 1.8rem;
     height: 1.8rem;
 }
-/*
-corFundoClara {
-    background-color: var(--c2)!important;
-}
-
-.corFundoEscura {
-    background-color: var(--c6)!important;
-}
-
-.corCobrinha {
-    background-color: var(--c4)!important;
-}*/
 
 table tr:nth-child(2n) td:nth-child(2n),
 table tr:nth-child(2n+1) td:nth-child(2n+1) {
@@ -152,12 +233,13 @@ table tr:nth-child(2n) td:nth-child(2n+1) {
 
 #controleBotoes {
     margin-top: 5rem;
-    bottom: 0;
+    bottom: 25%;
     width: 18rem;
     height: 12rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    position: absolute;
 }
 
 #botoesCima {
@@ -165,6 +247,7 @@ table tr:nth-child(2n) td:nth-child(2n+1) {
     height: 6rem;
     display: flex;
     justify-content: center;
+    
 }
 
 #botoesBaixo {
@@ -175,8 +258,37 @@ table tr:nth-child(2n) td:nth-child(2n+1) {
 }
 
 .tecla {
+    cursor: pointer;
     width: 6rem;
     height: 6rem;
     background-color: var(--c3);
 }
 
+@media (min-width: 450px) {
+    #formConfig {
+        width: 375px;
+    }
+    #gameOver {
+        width: 375px;
+    }
+}
+
+@media (min-width: 600px) {
+    table td {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+@media (min-width: 800px) {
+    table td {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+}
+
+@media (min-width: 1000px) {
+    #container {
+        width: 900px;
+    }
+}

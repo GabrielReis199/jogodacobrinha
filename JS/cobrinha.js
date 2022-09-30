@@ -1,13 +1,14 @@
 $(document).ready(function() {
 
     var cor1 = "#acadff"
-    var cor2 = "#B8D1FF"
+    var cor2 = "#aa7efc"
     var cor3 = "#340442"
-    var cor4 = "#8e28ee"
+    var cor4 = "#12381b"
     var cor5 = "#FFB323"
-    var cor6 = "#71a0f7"
+    var cor6 = "#7f5ac5"
 
-    var clock = 400 // velocidade da cobrinha
+    
+    var clock = 0 // velocidade da cobrinha
 
     var linhas = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"]
     //             1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
@@ -29,6 +30,12 @@ $(document).ready(function() {
     }
 
     rodaRandom = function() { // gera uma comida leatória no mapa
+        if(tamanhoCobra.length==256) {
+            $("#gameOver").show()
+            $("#itensGameOver p:nth-child(1)").html("Você ganhou! Parabéns!")
+            $("header span").css("pointer-events", "none")
+            controleJogo.pause()
+        }
         var auxLinha = Math.floor(Math.random() * 15) + 1
         var auxColuna = Math.floor(Math.random() * 15) + 1
         for(var i=0; i<tamanhoCobra.length-1; i++) {
@@ -67,7 +74,7 @@ $(document).ready(function() {
 
     moveCobra = async function(direcaoCBED) { // atualiza o vetor para a cobra se movimentar
         tamanhoCobraZero = tamanhoCobra[0]
-
+        console.log(clock)
         var auxTamanhoCobra = tamanhoCobra.slice(0,tamanhoCobra.length-1)
         for(var i=0; i<auxTamanhoCobra.length-1; i++) { // verifica se a cobra bateu nela mesma
             if(auxTamanhoCobra[i].linha==tamanhoCobra[tamanhoCobra.length-1].linha && 
@@ -103,9 +110,44 @@ $(document).ready(function() {
             }
         } else {
             $("#gameOver").show()
+            $("header span").css("pointer-events", "none")
             controleJogo.pause()
         }
         imprimeCobra() // após cada movimento, imprime a cobra pra atualizar na tela
+    }
+
+    resetaCobra = function() {
+        tamanhoCobra = [{linha: 8, coluna: 2}, 
+            {linha: 8, coluna: 3}, 
+            {linha: 8, coluna: 4}]
+        cimaBaixo = 8
+        esquerdaDireita = 4
+        direcaoCBED = 4
+    }
+
+    setaClock = function(dificuldade) {
+        if(dificuldade==1)
+            localStorage.nivel = 1000
+        else if(dificuldade==2)
+            localStorage.nivel = 500
+        else if(dificuldade==3)
+            localStorage.nivel = 300
+        clock = localStorage.nivel
+    }
+
+    desabilitaBotao = function(booleano) { // 1 = desliga cimabaixo | 0 = desliga esquerdadireita
+        if(booleano) {
+            $("#cima").css('pointer-events', 'none')
+            $("#baixo").css('pointer-events', 'none')
+            $("#esquerda").css('pointer-events', 'auto')
+            $("#direita").css('pointer-events', 'auto')
+        } else {
+            $("#cima").css('pointer-events', 'auto')
+            $("#baixo").css('pointer-events', 'auto')
+            $("#esquerda").css('pointer-events', 'none')
+            $("#direita").css('pointer-events', 'none')
+        }
+        
     }
     
     var controleJogo = { // permite que o jogo fique "rodando", podenso pausar e dar play
@@ -123,7 +165,7 @@ $(document).ready(function() {
             clearInterval(this.loopControle)
         }
     }
-    controleJogo.play()
+    controleJogo.pause()
 
     $(document).keydown(function(e){ // verifica os botões apertados
         if( (e.key == "w" || e.key == "ArrowUp") && direcaoCBED != 2 && direcaoCBED != 1 ){
@@ -143,10 +185,7 @@ $(document).ready(function() {
         await imprimeFundo()
         await moveCobra(direcaoCBED)
         controleJogo.play()
-        $(this).css('pointer-events', 'none')
-        $("#baixo").css('pointer-events', 'none')
-        $("#esquerda").css('pointer-events', 'auto')
-        $("#direita").css('pointer-events', 'auto')
+        desabilitaBotao(true)
     })
 
     $("#baixo").click(async function() {
@@ -155,10 +194,7 @@ $(document).ready(function() {
         await imprimeFundo()
         await moveCobra(direcaoCBED)
         controleJogo.play()
-        $(this).css('pointer-events', 'none')
-        $("#cima").css('pointer-events', 'none')
-        $("#esquerda").css('pointer-events', 'auto')
-        $("#direita").css('pointer-events', 'auto')
+        desabilitaBotao(true)
     })
 
     $("#esquerda").css('pointer-events', 'none')
@@ -168,10 +204,7 @@ $(document).ready(function() {
         await imprimeFundo()
         await moveCobra(direcaoCBED)
         controleJogo.play()
-        $(this).css('pointer-events', 'none')
-        $("#direita").css('pointer-events', 'none')
-        $("#cima").css('pointer-events', 'auto')
-        $("#baixo").css('pointer-events', 'auto')
+        desabilitaBotao(false)
     })
 
     $("#direita").click(async function() {
@@ -180,25 +213,54 @@ $(document).ready(function() {
         await imprimeFundo()
         await moveCobra(direcaoCBED)
         controleJogo.play()
-        $(this).css('pointer-events', 'none')
-        $("#esquerda").css('pointer-events', 'none')
-        $("#cima").css('pointer-events', 'auto')
-        $("#baixo").css('pointer-events', 'auto')
+        desabilitaBotao(false)
     })
 
     $("#gameOver").hide()
     $("#gameOver span").click(function() { // reseta o game, caso perca
+        $("header span").css("pointer-events", "auto")
+        $("#itensGameOver p:nth-child(1)").html("Você perdeu!")
         $("#gameOver").hide()
-        tamanhoCobra = [{linha: 8, coluna: 2}, 
-                        {linha: 8, coluna: 3}, 
-                        {linha: 8, coluna: 4}]
-        cimaBaixo = 8
-        esquerdaDireita = 4
-        direcaoCBED = 4
-        $("#cima").css('pointer-events', 'auto')
-        $("#baixo").css('pointer-events', 'auto')
-        $("#esquerda").css('pointer-events', 'none')
-        $("#direita").css('pointer-events', 'none')
+        resetaCobra()
+        clock = localStorage.nivel
+        desabilitaBotao(false)
+        rodaRandom()
+        controleJogo.play()
+    })
+
+    $("#cima").css('pointer-events', 'none')
+    $("#baixo").css('pointer-events', 'none')
+    $("#esquerda").css('pointer-events', 'none')
+    $("#direita").css('pointer-events', 'none')
+
+    $("header span").css("pointer-events", "none")
+    $("body").on("click", "input[type='submit']", function(e) { // pega a informacão do form
+        e.preventDefault()
+        $("header span").css("pointer-events", "auto")
+        var dificuldade = $("input[name=nivel]").val()
+        setaClock(dificuldade)
+        desabilitaBotao(false)
+        controleJogo.play()
+        $("#formConfig").slideToggle(200)
+        
+    })
+
+    $("header span").click(function() { // faz esconder as configuracoes da partida
+        $("#formConfig").slideToggle(200)
+        $("#formConfig span").show(200)
+        controleJogo.pause()
+        $("header span").css("pointer-events", "none")
+        $("input[type='submit']").attr("value", "Continuar Jogo")
+    })
+
+    $("#formConfig span").css("display", "none")
+    $("#formConfig span").click(function() { // faz esconder as configuracoes da partida
+        $("#formConfig").slideToggle(200)
+        $("header span").css("pointer-events", "auto")
+        resetaCobra()
+        var dificuldade = $("input[name=nivel]").val()
+        setaClock(dificuldade)
+        desabilitaBotao(false)
         rodaRandom()
         controleJogo.play()
     })

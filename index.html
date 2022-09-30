@@ -9,18 +9,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script type="text/javascript" src="./JS/jquery-3.6.1.min.js"></script>
     <script type="text/javascript" src="./JS/cobrinha.js"></script>
     <title>Jogo da Cobrinha</title>
 </head>
 <body>
     <div id="container">
+        <div id="formConfig">
+            <span class="material-symbols-outlined">refresh</span>
+            <form id="formulario" autocomplete="off">
+                <p class="blocoInput">
+                    <label class="formLabel" for="nivel">Dificuldade:</label>
+                    <div id="divRange">
+                        <input class="inputRange" type="range" name="nivel" id="nivel" min="1" max="3" value="2" oninput="rangeVal.innerHTML = Number(nivel.value)">
+                        <output id="rangeVal">2</output>
+                    </div>
+                </p>
+                <p class="blocoInput">
+                    <input class="botao" type="submit" for="formulario" value="Começar Jogo">
+                </p>
+            </form>
+        </div>
         <div id="gameOver">
             <div id="itensGameOver">
                 <p>Você perdeu!</p>
-                <p>Para jogar novamente, clique no botão abaixo:</p>
-                <span class="material-icons">menu</span>
+                <p>Jogar novamente:</p>
+                <span class="material-symbols-outlined">arrow_right_alt</span>
             </div>
         </div>
         <header>
@@ -28,7 +44,7 @@
                 <img src="./images/cobrinha-header.png" alt="Jogo da Velha">
                 <p>Jogo da Cobrinha</p>
             </div>
-            <span class="material-icons">menu</span>
+            <span class="material-symbols-outlined">settings</span>
         </header>
         <main>
             <table>
@@ -323,12 +339,12 @@
             </table>
             <div id="controleBotoes">
                 <div id="botoesCima">
-                    <div id="cima" class="tecla"></div>
+                    <img src="./images/seta-cima.png" alt="Seta de movimentação cima" id="cima" class="tecla">
                 </div>
                 <div id="botoesBaixo">
-                    <div id="esquerda" class="tecla"></div>
-                    <div id="baixo" class="tecla"></div>
-                    <div id="direita" class="tecla"></div>
+                    <img src="./images/seta-esquerda.png" alt="Seta de movimentação esquerda" id="esquerda" class="tecla">
+                    <img src="./images/seta-baixo.png" alt="Seta de movimentação baixo" id="baixo" class="tecla">
+                    <img src="./images/seta-direita.png" alt="Seta de movimentação direita" id="direita" class="tecla">
                 </div>
             </div>
         </main>
